@@ -7,14 +7,14 @@
   const sass = require('gulp-sass')
   const browserSync = require('browser-sync').create()
   const imagemin = require('gulp-imagemin')
-  
+  const plumber = require('gulp-plumber')
 
   const config = {
     src: {
       js: './src/app/**/*.js',
       scss: './src/scss/**/*.scss',
       html: './src/html/**/*.html',
-      image: './src/images**//*.*'
+      image: './src/images/**/*.*'
     },
     dest: {
       js: './dest/js',
@@ -25,11 +25,11 @@
   }
 
   const minifyJS = function() {
-    return gulp.src(config.src.js).pipe(webpack(require('./webpack.config.js'))).pipe(gulp.dest(config.dest.js)).pipe(browserSync.reload({stream: true, once: true}))
+    return gulp.src(config.src.js).pipe(plumber()).pipe(webpack(require('./webpack.config.js'))).pipe(gulp.dest(config.dest.js)).pipe(browserSync.reload({stream: true, once: true}))
   }
 
   const minifySASS = function() {
-    return gulp.src(config.src.scss).pipe(sass({outputStyle: 'compressed'})).pipe(gulp.dest(config.dest.scss)).pipe(browserSync.stream())
+    return gulp.src(config.src.scss).pipe(plumber()).pipe(sass({outputStyle: 'compressed'})).pipe(gulp.dest(config.dest.scss)).pipe(browserSync.stream())
   }
 
   const minifyHTML = function() {
