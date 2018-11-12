@@ -5,9 +5,12 @@
   const watch = require('gulp-watch')
   const webpack = require('webpack-stream')
   const sass = require('gulp-sass')
+  const uglify = require('gulp-uglify')
+  const htmlmin = require('gulp-htmlmin')
   const browserSync = require('browser-sync').create()
   const imagemin = require('gulp-imagemin')
   const plumber = require('gulp-plumber')
+  const version = require('gulp-version-number')
 
   const config = {
     src: {
@@ -17,15 +20,24 @@
       image: './src/images/**/*.*'
     },
     dest: {
-      js: './dest/js',
+      js: './dest/js/',
       scss: './dest/css/',
       html: './dest/',
-      image: './dest/'
+      image: './dest/images/'
+    }
+  }
+
+  const versionConfig = {
+    value: '%MDS%',
+    replaces: [/{VERSION_REPlACE}/g],
+    append: {
+      key: 'v',
+      to: ['image'],
     }
   }
 
   const minifyJS = function() {
-    return gulp.src(config.src.js).pipe(plumber()).pipe(webpack(require('./webpack.config.js'))).pipe(gulp.dest(config.dest.js)).pipe(browserSync.reload({stream: true, once: true}))
+    return gulp.src(config.src.js).pipe(plumber()).pipe(webpack(require('./webpack.config.js'))).pipe(uglify()).pipe(gulp.dest(config.dest.js)).pipe(browserSync.reload({stream: true, once: true}))
   }
 
   const minifySASS = function() {
@@ -33,7 +45,7 @@
   }
 
   const minifyHTML = function() {
-    return gulp.src(config.src.html).pipe(gulp.dest(config.dest.html)).pipe(browserSync.stream())
+    return gulp.src(config.src.html).pipe(htmlmin({collapseWhitespace: true})).pipe(version(versionConfig)).pipe(gulp.dest(config.dest.html)).pipe(browserSync.stream())
   }
 
   const imageMin = function() {

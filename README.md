@@ -1,6 +1,13 @@
 ## Gulp 與 Webpack 開發工具
 gulp+webpack+scss+babel
 
+附帶 [gulp-version-number](https://www.npmjs.com/package/gulp-version-number) 避免快取問題
+
+### gulp-version-number
+HTML 內圖片路徑會自動被加上`?v=xxxxxxx`
+JS 或 CSS 檔自行加上 `?v={VERSION_REPlACE}`
+詳細設定在 gulpfile 內
+
 ### 如何使用
 
 ***
