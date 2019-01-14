@@ -11,12 +11,13 @@
   const imagemin = require('gulp-imagemin')
   const plumber = require('gulp-plumber')
   const version = require('gulp-version-number')
+  const pug = require('gulp-pug')
 
   const config = {
     src: {
       js: './src/app/**/*.js',
       scss: './src/scss/**/*.scss',
-      html: './src/html/**/*.html',
+      html: './src/html/**/*.pug',
       image: './src/images/**/*.*'
     },
     dest: {
@@ -45,7 +46,7 @@
   }
 
   const minifyHTML = function() {
-    return gulp.src(config.src.html).pipe(htmlmin({collapseWhitespace: true})).pipe(version(versionConfig)).pipe(gulp.dest(config.dest.html)).pipe(browserSync.stream())
+    return gulp.src(config.src.html).pipe(pug({pretty: false})).pipe(version(versionConfig)).pipe(gulp.dest(config.dest.html)).pipe(browserSync.stream())
   }
 
   const imageMin = function() {
@@ -88,7 +89,7 @@
         minifyJS()
       } else if (/\.scss$/i.test(event.path)) {
         minifySASS()
-      } else if (/\.html$/i.test(event.path)) {
+      } else if (/\.pug$/i.test(event.path)) {
         minifyHTML()
       } else {
         imageMin()
