@@ -46,7 +46,7 @@
   }
 
   const minifyHTML = function() {
-    return gulp.src(config.src.html).pipe(pug({pretty: false})).pipe(version(versionConfig)).pipe(gulp.dest(config.dest.html)).pipe(browserSync.stream())
+    return gulp.src(config.src.html).pipe(plumber()).pipe(pug({pretty: false})).pipe(version(versionConfig)).pipe(gulp.dest(config.dest.html)).pipe(browserSync.stream())
   }
 
   const imageMin = function() {
